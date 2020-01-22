@@ -30,5 +30,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "loft-taxi-mui-theme": "^1.0.1",
+    "material-ui": "^0.20.2"
   }
 }

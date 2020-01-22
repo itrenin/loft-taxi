@@ -7,45 +7,31 @@ import Login from "./modules/login/login";
 import "./App.css";
 
 export default class App extends React.Component {
-  state = {
-    path: "register"
+
+constructor(props) {
+    super(props);
+    if (localStorage.getItem("loft-taxi")) {
+        this.state = { path: "order" };
+      }
+      else this.state = { path: "login" }
+}
+
+  stateHandler = state => {
+    this.setState({ path: `${state}` });
   };
 
-  buttonHandler = (e) => {
-    e.preventDefault();
-
-    switch (e.target.innerText) {
-      case "Профиль":
-        this.setState({ path: "profile" });
-        break; 
-      case "Заказать":
-        this.setState({ path: "order" });
-        break;
-      case "Войти":
-        this.setState({ path: "login" });
-        break;
-      case "Зарегистрироваться":
-        this.setState({ path: "register" });
-        break;
-      default:
-        this.setState({ path: "login" });
-        break;
-    }
-  }
+  PAGES = {
+    profile: () => <Profile />,
+    order: () => <Order />,
+    register: () => <Register />,
+    login: () => <Login stateHandler={this.stateHandler} />
+  };
 
   render() {
-
-    const PAGES = {
-      profile: () => <Profile />,
-      order: () => <Order />,
-      register: () => <Register />,
-      login: () => <Login />
-    };
-
     return (
       <div className="App">
-        <Header buttonHandler={this.buttonHandler} />
-        {PAGES[this.state.path]()}
+        <Header stateHandler={this.stateHandler} />
+        {this.PAGES[this.state.path]()}
       </div>
     );
   }
