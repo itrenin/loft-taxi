@@ -1,43 +1,37 @@
-import React from "react";
+import React from 'react'
 
 function Header(props) {
   function buttonHandler(e) {
-    if (e.target.className === "logout") {
-      if (localStorage.getItem("loft-taxi")) {
-        localStorage.removeItem("loft-taxi");
-        props.stateHandler("login");
-        //e.target.style = "visibility: hidden";
-      } else console.error("Удален ключ loft-taxi");
+    console.log(e.target.dataset.route)
+    if (e.target.dataset.route === 'logout') {
+      if (localStorage.getItem('loft-taxi')) {
+        localStorage.removeItem('loft-taxi')
+        props.stateHandler('login', false)
+        //e.target.style = "display: none";
+      } else console.error('Удален ключ loft-taxi')
     } else {
-      props.stateHandler(e.target.className);
+      props.stateHandler(e.target.dataset.route)
     }
   }
-  //   let style = {};
-  //   let logoutStyle = style => {
-  //     localStorage.getItem("loft-taxi")
-  //       ? (style = { visibility: "visible" })
-  //       : (style = { visibility: "hidden" });
-  //   };
-
   return (
     <header className="App-header">
-      <button className="profile" onClick={buttonHandler}>
+      <button data-route="profile" onClick={buttonHandler}>
         Профиль
       </button>
-      <button className="order" onClick={buttonHandler}>
+      <button data-route="order" onClick={buttonHandler}>
         Заказать
       </button>
-      <button className="login" onClick={buttonHandler}>
+      <button data-route="login" onClick={buttonHandler}>
         Войти
       </button>
-      <button className="logout" onClick={buttonHandler}>
+      <button data-route="logout" onClick={buttonHandler}>
         Выйти
       </button>
-      <button className="register" onClick={buttonHandler}>
+      <button data-route="register" onClick={buttonHandler}>
         Зарегистрироваться
       </button>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

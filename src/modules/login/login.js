@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react'
 
 export default class Login extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = (e) => {
+    e.preventDefault()
 
-    const login = e.target.login.value;
-    const password = e.target.password.value;
+    const login = e.target.login.value
+    const password = e.target.password.value
 
-    if (localStorage.getItem("loft-taxi")) {
-      localStorage.removeItem("loft-taxi");
+    if (localStorage.getItem('loft-taxi')) {
+      localStorage.removeItem('loft-taxi')
     }
     localStorage.setItem(
-      "loft-taxi",
+      'loft-taxi',
       JSON.stringify(`login: ${login}, pasword: ${password}`)
-    );
+    )
 
-    e.target.login.value = "";
-    e.target.password.value = "";
+    e.target.login.value = ''
+    e.target.password.value = ''
 
-    this.props.stateHandler("order");
-  };
+    this.props.stateHandler('order', true)
+  }
 
   render() {
     return (
@@ -37,6 +37,6 @@ export default class Login extends React.Component {
         </label>
         <div>Регистрация</div>
       </form>
-    );
+    )
   }
 }
