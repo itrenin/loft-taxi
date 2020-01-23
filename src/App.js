@@ -1,21 +1,32 @@
+/* eslint-disable react/no-typos */
 import React from 'react'
-import Header from './modules/header/header'
-import Profile from './modules/profile/profile'
-import Order from './modules/order/order'
-import Register from './modules/register/register'
-import Login from './modules/login/login'
+import PropTypes from 'prop-types'
+import Header from './components/header/header'
+import Profile from './components/profile/profile'
+import Order from './components/order/order'
+import Register from './components/register/register'
+import Login from './components/login/login'
 import './App.css'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    if (localStorage.getItem('loft-taxi')) {
-      this.state = { path: 'order', isLogin: true }
-    } else this.state = { path: 'login', isLogin: false }
+
+    const hasAuthorization = Boolean(localStorage.getItem('loft-taxi'))
+
+    this.state = {
+      path: hasAuthorization ? 'order' : 'login',
+      isLogin: hasAuthorization
+    }
+  }
+
+  static propTypes = {
+    stateHandler: PropTypes.func,
+    isLogin: PropTypes.Boolean
   }
 
   stateHandler = (path, isLogin) => {
-    this.setState({ path: `${path}`, isLogin: `${isLogin}` })
+    this.setState({ path, isLogin })
   }
 
   PAGES = {
@@ -28,7 +39,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header stateHandler={this.stateHandler} />
+        <Header stateHandler={this.stateHandler} isLogin={this.state.isLogin} />
         {this.PAGES[this.state.path]()}
       </div>
     )
