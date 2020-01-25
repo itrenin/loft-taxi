@@ -3,14 +3,12 @@ import React from 'react'
 function Header(props) {
   function buttonHandler(e) {
     // console.log(e.target.dataset.route)
-    let isAuth = Boolean(localStorage.getItem('loft-taxi'))
+    let isAuth = Boolean(localStorage.getItem('loft-taxi-auth'))
 
     if (e.target.dataset.route === 'logout') {
-      if (isAuth) {
-        localStorage.removeItem('loft-taxi')
-        props.stateHandler('login', false)
-        //e.target.style = "display: none";
-      } else console.error('Удален ключ loft-taxi')
+      isAuth && props.stateHandler('login', false)
+      console.log('isAuth ', isAuth)
+      localStorage.removeItem('loft-taxi-auth')
     } else {
       props.stateHandler(e.target.dataset.route, isAuth)
     }

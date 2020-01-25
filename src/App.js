@@ -32,14 +32,20 @@ export default class App extends React.Component {
   PAGES = {
     profile: () => <Profile />,
     order: () => <Order />,
-    register: () => <Register />,
+    register: () => <Register stateHandler={this.stateHandler} />,
     login: () => <Login stateHandler={this.stateHandler} />
   }
 
   render() {
     return (
       <div className="App">
-        <Header stateHandler={this.stateHandler} isLogin={this.state.isLogin} />
+        {this.state.isLogin && (
+          <Header
+            stateHandler={this.stateHandler}
+            isLogin={this.state.isLogin}
+          />
+        )}
+
         {this.PAGES[this.state.path]()}
       </div>
     )
