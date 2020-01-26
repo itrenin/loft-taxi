@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
+//import TextField from '@material-ui/core/TextField'
 
 export default class Register extends React.Component {
   handleSubmit(e) {
@@ -40,7 +41,7 @@ export default class Register extends React.Component {
 
   render() {
     return (
-      <>
+      <div className="background">
         <form onSubmit={this.handleSubmit}>
           <label>
             Почта:
@@ -64,16 +65,11 @@ export default class Register extends React.Component {
         </form>
         <label>
           уже зарегистрированы?
-          <Button
-            data-rout="login"
-            onClick={this.handleLogin}
-            variant="contained"
-            color="primary"
-          >
+          <Button data-rout="login" onClick={this.handleLogin} color="inherit">
             Войти
           </Button>
         </label>
-      </>
+      </div>
     )
   }
 }
