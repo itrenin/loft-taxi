@@ -1,6 +1,7 @@
 /* eslint-disable react/no-typos */
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Logo } from 'loft-taxi-mui-theme'
 import Header from './components/header/header'
 import Profile from './components/profile/profile'
 import Order from './components/order/order'
@@ -12,7 +13,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
 
-    const hasAuthorization = Boolean(localStorage.getItem('loft-taxi'))
+    const hasAuthorization = Boolean(localStorage.getItem('loft-taxi-auth'))
 
     this.state = {
       path: hasAuthorization ? 'order' : 'login',
@@ -21,7 +22,7 @@ export default class App extends React.Component {
   }
 
   static propTypes = {
-    stateHandler: PropTypes.func,
+    stateHandler: PropTypes.any,
     isLogin: PropTypes.Boolean
   }
 
@@ -38,7 +39,16 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      
+      <div className={this.state.path === 'order' ? 'App-nobackground' : 'App'}>
+        {/*console.log(this.hasAuthorization)*/}
+        {this.state.path !== 'order' && (
+          <div className={'logowrapper'}>
+            <Logo white />
+            {/* Что передавать в лого, чтобы получить src LogoWhite, как засунуть кастомные стили?*/}
+          </div>
+        )}
+
         {this.state.isLogin && (
           <Header
             stateHandler={this.stateHandler}

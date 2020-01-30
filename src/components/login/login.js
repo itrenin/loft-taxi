@@ -1,119 +1,45 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Logo } from 'loft-taxi-mui-theme'
-//import clsx from 'clsx'
-import { withStyles, makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
 
-const styles = {
-  root: {
-    position: 'absolute',
-    top: '50%',
-    left: '30%'
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
   }
-}
-const useStyles = makeStyles({
-  root: {
-    backgroundColor: 'yellow',
-    color: props => props.color,
-  },
-});
+}))
 
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'green',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'green',
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: 'red',
-      },
-      '&:hover fieldset': {
-        borderColor: 'yellow',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'green',
-      },
-    },
-  },
-})(TextField);
-// export default class Login extends React.Component {
-//   handleSubmit = (e) => {
-//     e.preventDefault()
-
-//     const login = e.target.login.value
-//     const password = e.target.password.value
-
-//     const usersList = localStorage.getItem('loft-taxi-users')
-
-//     if (usersList) {
-//       let usersArr = JSON.parse(usersList)
-//       for (const userItem of usersArr) {
-//         if (userItem.login === login && userItem.password === password) {
-//           this.props.stateHandler('order', true)
-//           localStorage.setItem('loft-taxi-auth', true)
-//           break
-//         }
-//       }
-//       e.target.login.value = ''
-//       e.target.password.value = ''
-//     } else alert('Зарегистрируйтесь')
-//   }
-
-//   handleRegister = (e) => {
-//     e.preventDefault()
-//     console.log(e.target.dataRout)
-//     this.props.stateHandler('register', false)
-//   }
-
-//   //classes = useSyles();
-
-//   render() {
-//     return (
-//       <div className="background">
-//         <Logo
-//           classes={{
-//             root: this.classes.logo // class name, e.g. `classes-nesting-root-x`
-//           }}
-//         ></Logo>
-//         <form onSubmit={this.handleSubmit}>
-//           <label>
-//             Логин:
-//             <input name="login" type="text" placeholder="email" />
-//           </label>
-//           <label>
-//             Пароль:
-//             <input name="password" type="password" placeholder="пароль" />
-//           </label>
-//           <label>
-//             <input type="submit" value="Войти" />
-//           </label>
-//         </form>
-//         <button data-rout="register" onClick={this.handleRegister}>
-//           Регистрация
-//         </button>
-//       </div>
-//     )
-//   }
-// }
-
-function Login(props) {
+export default function Login(props) {
   Login.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object.isRequired,
     className: PropTypes.string
   }
 
-  //const { classes, children, className, ...other } = props
+  const classes = useStyles()
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    const login = e.target.login.value
-    const password = e.target.password.value
+    const login = document.getElementById('email').value
+    const password = document.getElementById('password').value
 
     const usersList = localStorage.getItem('loft-taxi-users')
 
@@ -121,13 +47,16 @@ function Login(props) {
       let usersArr = JSON.parse(usersList)
       for (const userItem of usersArr) {
         if (userItem.login === login && userItem.password === password) {
+          console.log('Bingo!')
           props.stateHandler('order', true)
           localStorage.setItem('loft-taxi-auth', true)
           break
         }
       }
-      e.target.login.value = ''
-      e.target.password.value = ''
+      !localStorage.getItem('loft-taxi-auth', true) &&
+        alert('Пользователь не найден')
+      document.getElementById('email').value = ''
+      document.getElementById('password').value = ''
     } else alert('Зарегистрируйтесь')
   }
 
@@ -136,31 +65,61 @@ function Login(props) {
     console.log(e.target.dataRout)
     props.stateHandler('register', false)
   }
-  const classes = useStyles();
   return (
-    <div className="background">
-      <div className="logowrapper">
-        <Logo /> {/* Что передавать в лого, чтобы получить src LogoWhite, как засунуть кастомные стили?*/}
-      </div>
-      <CssTextField className={classes.margin} id="custom-css-standard-input" label="Custom CSS" />
-      
-      <form onSubmit={handleSubmit}>
-        <label>
-          Логин:
-          <input name="login" type="text" placeholder="email" />
-        </label>
-        <label>
-          Пароль:
-          <input name="password" type="password" placeholder="пароль" />
-        </label>
-        <label>
-          <input type="submit" value="Войти" />
-        </label>
-      </form>
-      <button data-rout="register" onClick={handleRegister}>
-        Регистрация
-      </button>
-    </div>
+    <Box className="register-login">
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Войти
+          </Typography>
+          <form className={classes.form} noValidate>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Typography component="span">
+                  Новый пользователь?&nbsp;
+                </Typography>
+                <Link href="#" variant="body2" onClick={handleRegister}>
+                  Зарегистрируйтесь
+                </Link>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Имя пользователя"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Пароль"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Войти
+            </Button>
+            <Grid container justify="flex-end"></Grid>
+          </form>
+        </div>
+      </Container>
+    </Box>
   )
 }
-export default withStyles(styles)(Login)
