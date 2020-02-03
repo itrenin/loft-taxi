@@ -7,7 +7,9 @@ import Profile from './components/profile/profile'
 import Order from './components/order/order'
 import Register from './components/register/register'
 import Login from './components/login/login'
+
 import './App.css'
+import { AuthContext } from './context'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -38,8 +40,8 @@ export default class App extends React.Component {
   }
 
   render() {
+    console.log(this.context)
     return (
-      
       <div className={this.state.path === 'order' ? 'App-nobackground' : 'App'}>
         {/*console.log(this.hasAuthorization)*/}
         {this.state.path !== 'order' && (
@@ -61,3 +63,4 @@ export default class App extends React.Component {
     )
   }
 }
+App.contextType = AuthContext

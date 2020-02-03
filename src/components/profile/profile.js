@@ -14,7 +14,7 @@ export default function Profile() {
         Профиль
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Спасрб оплаты
+        Спасоб оплаты
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>

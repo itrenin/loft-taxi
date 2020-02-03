@@ -2,40 +2,42 @@ import React from 'react'
 import mapboxgl from 'mapbox-gl'
 
 export default class Map extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      lng: 37.6155600,
+      lat: 55.7522200,
+      zoom: 13
+    }
+  }
+  map = null
+  mapContainer = React.createRef()
 
-    // map = null;
-//     mapContainer = React.createRef();
-    
-//       map = new mapboxgl.Map({
-//         container: this.mapContainer.current,
-//         style: 'mapbox://styles/mapbox/streets-v9',
-//         center: [30.2656504, 59.8029126]
-//       })
+  componentDidMount() {
+    mapboxgl.accessToken =
+      'pk.eyJ1IjoiaXRyZW5pbiIsImEiOiJjazYwbTRscmowOHN4M2ZwazB6bHk1d2Y2In0.XWHWTos5YemDNevj4OW2Qw'
+    this.map = new mapboxgl.Map({
+      container: this.mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [this.state.lng, this.state.lat],
+      zoom: this.state.zoom
+    })
+  }
 
-      
-      
-//   componentDidMount() {
-    // mapboxgl.accesstoken =
-    //   'pk.eyJ1IjoiaXRyZW5pbiIsImEiOiJjazYwbTRscmowOHN4M2ZwazB6bHk1d2Y2In0.XWHWTos5YemDNevj4OW2Qw'
-    // const map = this.map;
-//     console.log(this.map)
-//   }
-
-//   componentWillUnmount() {
-//     //this.map.remove()
-//   }
+  componentWillUnmount() {
+    this.map.remove()
+  }
 
   render() {
-    // const style = {
-    //   position: 'absolute',
-    //   top: 0,
-    //   bottom: 0,
-    //   width: '100%'
-    // }
+    const style = {
+      position: 'relative',
+      height: '100%',
+      width: '100%'
+    }
 
     return (
-        
-    // <div style={style} ref={(el) => (this.mapContainer = el)} />
-    <div /*ref={this.mapContainer}*/ >Тут будет карта</div>)
+      <div style={style} ref={this.mapContainer} />
+      // <div /*ref={this.mapContainer}*/ >Тут будет карта</div>
+    )
   }
 }
