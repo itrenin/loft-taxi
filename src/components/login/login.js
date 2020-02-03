@@ -42,12 +42,12 @@ export default function Login(props) {
 
     let login = document.getElementById('email').value
     let password = document.getElementById('password').value
-    //console.log(context)
-    console.log(login)
-    console.log(password)
+
     context.login(login,password)
     document.getElementById('email').value = ''
     document.getElementById('password').value = ''
+
+   console.log(context)
   }
 
   const handleRegister = (e) => {
@@ -59,7 +59,8 @@ export default function Login(props) {
   return (
     <AuthContext.Consumer>
       {(value) => {
-        console.log('из контекста в рендере '+value)
+        // console.log('из контекста в рендере ')
+        // console.log(value)
         return (
           <Box className="register-login">
             <Container component="main" maxWidth="xs">

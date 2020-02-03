@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 //import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 //import Container from '@material-ui/core/Container'
 import Button from '@material-ui/core/Button'
 import { Logo } from 'loft-taxi-mui-theme'
+import { AuthContext } from '../../context'
 //import IconButton from '@material-ui/core/IconButton';
 //import SearchIcon from '@material-ui/icons/Search';
 //import Typography from '@material-ui/core/Typography'
@@ -31,20 +32,20 @@ function Header(props) {
     }
   }))
   const classes = useStyles()
-
+  const context = useContext(AuthContext)
   function buttonHandler(e) {
     e.preventDefault()
-
+    context.logout(e)
     //console.log(e.target.parentNode.parentNode.dataset.route)
-    let isAuth = Boolean(localStorage.getItem('loft-taxi-auth'))
+    // let isAuth = Boolean(localStorage.getItem('loft-taxi-auth'))
 
-    if (e.target.parentNode.parentNode.dataset.route === 'logout') {
-      isAuth && props.stateHandler('login', false)
-      console.log('isAuth ', isAuth)
-      localStorage.removeItem('loft-taxi-auth')
-    } else {
-      props.stateHandler(e.target.parentNode.parentNode.dataset.route, isAuth)
-    }
+    // if (e.target.parentNode.parentNode.dataset.route === 'logout') {
+    //   isAuth && props.stateHandler('login', false)
+    //   console.log('isAuth ', isAuth)
+    //   localStorage.removeItem('loft-taxi-auth')
+    // } else {
+    //   props.stateHandler(e.target.parentNode.parentNode.dataset.route, isAuth)
+    // }
   }
   return (
     //console.log(props.isLogin),
@@ -70,56 +71,50 @@ function Header(props) {
     <React.Fragment>
       <Toolbar className={classes.toolbar}>
         {/* <Container maxWidth="1170px"> */}
-          <Grid xs={9}>
-            <Logo />
-            {/* <IconButton>
+        <Grid xs={9}>
+          <Logo />
+          {/* <IconButton>
           <SearchIcon />
         </IconButton> */}
-          </Grid>
+        </Grid>
+        <Grid xs={1}>
+          <div id="order" data-route="order">
+            <Button /*variant="outlined"*/ size="small" onClick={buttonHandler}>
+              Карта
+            </Button>
+          </div>
+        </Grid>
+        <Grid xs={1}>
+          <div id="profile" data-route="profile">
+            <Button /*variant="outlined"*/ size="small" onClick={buttonHandler}>
+              Профиль
+            </Button>
+          </div>
+        </Grid>
+        {!props.isLogin && (
           <Grid xs={1}>
-            <div id="order" data-route="order">
+            <div id="login" data-route="login">
               <Button
                 /*variant="outlined"*/ size="small"
                 onClick={buttonHandler}
               >
-                Карта
+                Войти
               </Button>
             </div>
           </Grid>
+        )}
+        {props.isLogin && (
           <Grid xs={1}>
-            <div id="profile" data-route="profile">
+            <div id="logout" data-route="logout">
               <Button
                 /*variant="outlined"*/ size="small"
                 onClick={buttonHandler}
               >
-                Профиль
+                Выйти
               </Button>
             </div>
           </Grid>
-          {!props.isLogin && (
-            <Grid xs={1}>
-              <div id="login" data-route="login">
-                <Button
-                  /*variant="outlined"*/ size="small"
-                  onClick={buttonHandler}
-                >
-                  Войти
-                </Button>
-              </div>
-            </Grid>
-          )}
-          {props.isLogin && (
-            <Grid xs={1}>
-              <div id="logout" data-route="logout">
-                <Button
-                  /*variant="outlined"*/ size="small"
-                  onClick={buttonHandler}
-                >
-                  Выйти
-                </Button>
-              </div>
-            </Grid>
-          )}
+        )}
         {/* </Container> */}
       </Toolbar>
       {/* <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>

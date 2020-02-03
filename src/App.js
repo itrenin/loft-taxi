@@ -23,12 +23,25 @@ export default class App extends React.Component {
     }
   }
 
+  static contextType = AuthContext
+
+  componentDidMount() {
+    //let value = this.context;
+    /* выполнить побочный эффект на этапе монтирования, используя значение MyContext */
+    console.log('из дидмаунт')
+    console.log(this.context)
+    this.stateHandler('', this.context.isLoggedIn)
+  }
+
   static propTypes = {
     stateHandler: PropTypes.any,
     isLogin: PropTypes.Boolean
   }
 
   stateHandler = (path, isLogin) => {
+    if (path === '') {
+      isLogin ? (path = 'order') : (path = 'login')
+    }
     this.setState({ path, isLogin })
   }
 
@@ -40,7 +53,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.context)
+    //this.stateHandler(this.context.isLoggedIn)
+    //console.log(this.props)
     return (
       <div className={this.state.path === 'order' ? 'App-nobackground' : 'App'}>
         {/*console.log(this.hasAuthorization)*/}
@@ -63,4 +77,3 @@ export default class App extends React.Component {
     )
   }
 }
-App.contextType = AuthContext
