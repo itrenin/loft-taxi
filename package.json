@@ -37,6 +37,7 @@
     "loft-taxi-mui-theme": "^1.0.1",
     "mapbox-gl": "^1.7.0",
     "material-ui": "^0.20.2",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "react-router-dom": "^5.1.2"
   }
 }
