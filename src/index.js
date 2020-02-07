@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { theme } from 'loft-taxi-mui-theme' // Импортируем саму тему
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import { AuthContext, auth } from './context'
+import { AuthProvider } from './context'
 // import { postcssNormalize } from 'postcss-normalize'
 // import * as css from './App.css'
 
@@ -12,9 +12,9 @@ import { AuthContext, auth } from './context'
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
-    <AuthContext.Provider value={auth}>
+    <AuthProvider>
       <App />
-    </AuthContext.Provider>
+    </AuthProvider>
   </MuiThemeProvider>,
   document.getElementById('root')
 )

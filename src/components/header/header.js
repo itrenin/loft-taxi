@@ -33,19 +33,21 @@ function Header(props) {
   }))
   const classes = useStyles()
   const context = useContext(AuthContext)
+
+  // console.log("из хедера")
+  // console.log(context)
+
   function buttonHandler(e) {
     e.preventDefault()
-    context.logout(e)
+    //context.logout(e)
     //console.log(e.target.parentNode.parentNode.dataset.route)
     // let isAuth = Boolean(localStorage.getItem('loft-taxi-auth'))
 
-    // if (e.target.parentNode.parentNode.dataset.route === 'logout') {
-    //   isAuth && props.stateHandler('login', false)
-    //   console.log('isAuth ', isAuth)
-    //   localStorage.removeItem('loft-taxi-auth')
-    // } else {
-    //   props.stateHandler(e.target.parentNode.parentNode.dataset.route, isAuth)
-    // }
+    if (e.target.parentNode.parentNode.dataset.route === 'logout') {
+      context.isLoggedIn && context.logout(e)
+    } else {
+      props.setPage(e.target.parentNode.parentNode.dataset.route)
+    }
   }
   return (
     //console.log(props.isLogin),
@@ -91,7 +93,7 @@ function Header(props) {
             </Button>
           </div>
         </Grid>
-        {!props.isLogin && (
+        {!context.isLoggedIn && (
           <Grid xs={1}>
             <div id="login" data-route="login">
               <Button
@@ -103,7 +105,7 @@ function Header(props) {
             </div>
           </Grid>
         )}
-        {props.isLogin && (
+        {context.isLoggedIn && (
           <Grid xs={1}>
             <div id="logout" data-route="logout">
               <Button

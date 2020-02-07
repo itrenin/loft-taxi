@@ -43,17 +43,17 @@ export default function Login(props) {
     let login = document.getElementById('email').value
     let password = document.getElementById('password').value
 
-    context.login(login,password)
+    context.login(login, password)
     document.getElementById('email').value = ''
     document.getElementById('password').value = ''
 
-   console.log(context)
+    console.log(context)
   }
 
   const handleRegister = (e) => {
     e.preventDefault()
-    console.log(e.target.dataRout)
-    props.stateHandler('register', false)
+    // console.log(e.target.parentNode.dataset.route)
+    props.setPage(e.target.parentNode.dataset.route)
   }
 
   return (
@@ -75,9 +75,11 @@ export default function Login(props) {
                       <Typography component="span">
                         Новый пользователь?&nbsp;
                       </Typography>
-                      <Link href="#" variant="body2" onClick={handleRegister}>
-                        Зарегистрируйтесь
-                      </Link>
+                      <span data-route="register">
+                        <Link href="#" variant="body2" onClick={handleRegister}>
+                          Зарегистрируйтесь
+                        </Link>
+                      </span>
                     </Grid>
                     <Grid item xs={12}>
                       <TextField

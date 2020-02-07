@@ -31,10 +31,9 @@ export default function Register(props) {
   // тут меняем стейт на логин, чтобы войти на сайт
   const handleLogin = (e) => {
     e.preventDefault()
-    props.stateHandler('login', false)
+    props.setPage('login')
   }
 
-    // тут меняем стейт на логин, чтобы войти на сайт
   const handleRegister = (e) => {
     e.preventDefault()
     const user = {
@@ -45,9 +44,9 @@ export default function Register(props) {
     }
     let usersArr = []
     let isUserRegistered = false
-   
+
     if (!localStorage.getItem('loft-taxi-users')) {
-      usersArr.push(user);
+      usersArr.push(user)
     } else {
       usersArr = JSON.parse(localStorage.getItem('loft-taxi-users'))
       for (const userItem of usersArr) {
@@ -59,10 +58,10 @@ export default function Register(props) {
       }
       if (!isUserRegistered) {
         usersArr.push(user)
-        
       }
     }
     localStorage.setItem('loft-taxi-users', JSON.stringify(usersArr))
+    props.setPage('login')
   }
 
   return (
@@ -79,9 +78,11 @@ export default function Register(props) {
                 <Typography component="span">
                   Уже зарегистрированы?&nbsp;
                 </Typography>
-                <Link href="#" variant="body2" onClick={handleLogin}>
-                  Войдите
-                </Link>
+                <span data-route = "login">
+                  <Link href="#" variant="body2" onClick={handleLogin}>
+                    Войдите
+                  </Link>
+                </span>
               </Grid>
               <Grid item xs={12}>
                 <TextField

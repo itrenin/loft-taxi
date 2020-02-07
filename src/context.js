@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
+export const AuthContext = React.createContext()
 
-export const auth = {
-  login: (login, password) => {
+export const AuthProvider = ({ children }) => {
+  const [isLoggedIn, setIsAuth] = useState(false)
 
+  const login = (login, password) => {
     const usersList = localStorage.getItem('loft-taxi-users')
 
     if (usersList) {
@@ -12,22 +14,29 @@ export const auth = {
         if (userItem.login === login && userItem.password === password) {
           console.log('Bingo!')
           localStorage.setItem('loft-taxi-auth', true)
-          auth.isLoggedIn = true
-          console.log(auth.isLoggedIn)
+          setIsAuth(true)
+          //console.log(auth.isLoggedIn)
           break
         }
       }
       !localStorage.getItem('loft-taxi-auth', true) &&
         alert('Пользователь не найден')
     } else alert('Зарегистрируйтесь')
-  },
-  logout: (e) => {
-
+  }
+  const logout = (e) => {
     if (e.target.parentNode.parentNode.dataset.route === 'logout') {
       localStorage.removeItem('loft-taxi-auth')
+      setIsAuth(false)
     }
-  },
-  isLoggedIn: Boolean(localStorage.getItem('loft-taxi-auth'))
+  }
+  const getContext = () => {
+    return {
+      isLoggedIn,
+      login,
+      logout
+    }
+  }
+  return (
+    <AuthContext.Provider value={getContext()}>{children}</AuthContext.Provider>
+  )
 }
-
-export const AuthContext = React.createContext()
