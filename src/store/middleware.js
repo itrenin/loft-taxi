@@ -67,10 +67,6 @@ export const authMiddleware = (store) => (next) => (action) => {
                 store.dispatch(profileSuccess(response.data))
             })
           }
-          
-        // !!response.data.success &&
-        //   store.dispatch(profileSuccess(action.payload))
-        // !response.data.success && store.dispatch(profileFailure(response.data))
       }).catch(()=>{
         store.dispatch(profileFailure(action.payload))
       })
