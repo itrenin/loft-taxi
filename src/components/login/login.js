@@ -1,4 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link as RouteLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
@@ -9,7 +11,9 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import { AuthContext } from '../../context'
+//import { AuthContext } from '../../context'
+//import {some} from '../../store/some'
+import { getError, getLoading, signInRequest } from '../../modules/auth'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,95 +37,101 @@ export default function Login(props) {
     classes: PropTypes.object.isRequired,
     className: PropTypes.string
   }
+  const [user, setUser] = useState({
+    email: '',
+    password: ''
+  })
+  const dispatch = useDispatch()
+  const error = useSelector(getError)
+  const loading = useSelector(getLoading)
 
   const classes = useStyles()
-  const context = useContext(AuthContext)
+  //const context = useContext(AuthContext)
+
+  const handleChange = ({ target: { value, name } }) => {
+    setUser({
+      ...user,
+      [name]: value
+    })
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    let login = document.getElementById('email').value
-    let password = document.getElementById('password').value
+    dispatch(signInRequest(user))
 
-    context.login(login, password)
     document.getElementById('email').value = ''
     document.getElementById('password').value = ''
-
-    console.log(context)
-  }
-
-  const handleRegister = (e) => {
-    e.preventDefault()
-    // console.log(e.target.parentNode.dataset.route)
-    props.setPage(e.target.parentNode.dataset.route)
   }
 
   return (
-    <AuthContext.Consumer>
-      {(value) => {
-        // console.log('из контекста в рендере ')
-        // console.log(value)
-        return (
-          <Box className="register-login">
-            <Container component="main" maxWidth="xs">
-              <CssBaseline />
-              <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                  Войти
+    <Box className="register-login">
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Войти
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <Typography component="span">
+                  Новый пользователь?&nbsp;
                 </Typography>
-                <form className={classes.form} noValidate>
-                  <Grid container spacing={2}>
-                    <Grid item>
-                      <Typography component="span">
-                        Новый пользователь?&nbsp;
-                      </Typography>
-                      <span data-route="register">
-                        <Link href="#" variant="body2" onClick={handleRegister}>
-                          Зарегистрируйтесь
-                        </Link>
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="Имя пользователя"
-                        name="email"
-                        autoComplete="email"
-                      />
-                    </Grid>
+                <span data-route="register">
+                  <Link to="/signup" component={RouteLink}>
+                    Зарегистрируйтесь
+                  </Link>
+                </span>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="email"
+                  label="Имя пользователя"
+                  name="email"
+                  autoComplete="email"
+                  value={user.email}
+                />
+              </Grid>
 
-                    <Grid item xs={12}>
-                      <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Пароль"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                      />
-                    </Grid>
-                  </Grid>
-                  <Button
-                    type="submit"
-                    onClick={handleSubmit}
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                  >
-                    Войти
-                  </Button>
-                  <Grid container justify="flex-end"></Grid>
-                </form>
-              </div>
-            </Container>
-          </Box>
-        )
-      }}
-    </AuthContext.Consumer>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  name="password"
+                  label="Пароль"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={user.password}
+                  //required
+                />
+              </Grid>
+            </Grid>
+            <Box style={{ color: 'red', marginTop: '16px' }}>
+              {error && error}
+            </Box>
+            <Button
+              type="submit"
+              //onClick={handleSubmit}
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={loading ? true : false}
+            >
+              Войти
+            </Button>
+            <Grid container justify="flex-end"></Grid>
+          </form>
+        </div>
+      </Container>
+    </Box>
   )
 }
+
 // export { login, password }

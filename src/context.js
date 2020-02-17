@@ -3,7 +3,9 @@ import React, { useState } from 'react'
 export const AuthContext = React.createContext()
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsAuth] = useState(false)
+
+  const [isLoggedIn, setIsAuth] = useState(Boolean(localStorage.getItem('loft-taxi-auth')))
+  const loginPath = '/login'
 
   const login = (login, password) => {
     const usersList = localStorage.getItem('loft-taxi-users')
@@ -25,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   }
   const logout = (e) => {
     if (e.target.parentNode.parentNode.dataset.route === 'logout') {
-      localStorage.removeItem('loft-taxi-auth')
+      //localStorage.removeItem('loft-taxi-auth')
       setIsAuth(false)
     }
   }
@@ -33,7 +35,8 @@ export const AuthProvider = ({ children }) => {
     return {
       isLoggedIn,
       login,
-      logout
+      logout,
+      loginPath
     }
   }
   return (

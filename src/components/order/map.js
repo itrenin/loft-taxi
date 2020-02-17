@@ -30,13 +30,16 @@ export default class Map extends React.Component {
 
   render() {
     const style = {
-      position: 'relative',
-      height: '100%',
+      position: 'absolut',
+      top:'0',
+      left:'0',
+      height: '100vh',
       width: '100%'
     }
 
     return (
       <div style={style} ref={this.mapContainer} />
+      //<div ref={this.mapContainer} />
       // <div /*ref={this.mapContainer}*/ >Тут будет карта</div>
     )
   }
