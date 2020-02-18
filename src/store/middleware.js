@@ -29,8 +29,6 @@ import {
   fetchCoordsRequest,
   fetchCoordsSuccess,
   fetchCoordsFailure,
-  setIsOrderMade,
-  clearRoutes,
   getCoordsApi
 } from '../modules/route'
 
