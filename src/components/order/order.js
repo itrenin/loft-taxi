@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Map from './map'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
