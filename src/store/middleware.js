@@ -18,6 +18,22 @@ import {
   getProfileApi
 } from '../modules/profile'
 
+import {
+  fetchAddressesRequest,
+  fetchAddressesSuccess,
+  fetchAddressesFailure,
+  getAddressListApi
+} from '../modules/addresses'
+
+import {
+  fetchCoordsRequest,
+  fetchCoordsSuccess,
+  fetchCoordsFailure,
+  setIsOrderMade,
+  clearRoutes,
+  getCoordsApi
+} from '../modules/route'
+
 export const authMiddleware = (store) => (next) => (action) => {
   if (action.type === logout.toString()) {
     localStorage.removeItem('loft-taxi-auth')
@@ -61,19 +77,46 @@ export const authMiddleware = (store) => (next) => (action) => {
     const token = store.getState().user.token
     //console.log({...action.payload, token} )
     try {
-      postProfileApi({ ...action.payload, token }).then((response) => {
+      postProfileApi({ ...action.payload, token })
+        .then((response) => {
           if (response.data.success) {
-            getProfileApi(token).then((response)=>{
-                store.dispatch(profileSuccess(response.data))
+            getProfileApi(token).then((response) => {
+              store.dispatch(profileSuccess(response.data))
             })
           }
-      }).catch(()=>{
-        store.dispatch(profileFailure(action.payload))
-      })
+        })
+        .catch(() => {
+          store.dispatch(profileFailure(action.payload))
+        })
     } catch (error) {
       profileFailure(error)
     }
   }
-  
+  if (action.type === fetchAddressesRequest.toString()) {
+    try {
+      getAddressListApi()
+        .then((response) => {
+          store.dispatch(fetchAddressesSuccess(response.data.addresses))
+        })
+        .catch((error) => {
+          store.dispatch(fetchAddressesFailure(error))
+        })
+    } catch (error) {
+      store.dispatch(fetchAddressesFailure(error))
+    }
+  }
+  if (action.type === fetchCoordsRequest.toString()) {
+    try {
+      getCoordsApi(action.payload)
+        .then((response) => {
+          store.dispatch(fetchCoordsSuccess(response.data))
+        })
+        .catch((error) => {
+          store.dispatch(fetchCoordsFailure(error))
+        })
+    } catch (error) {
+      store.dispatch(fetchCoordsFailure(error))
+    }
+  }
   next(action)
 }

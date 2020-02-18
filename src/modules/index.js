@@ -8,7 +8,8 @@ import storage from 'redux-persist/lib/storage'
 import user from './auth'
 import profile from './profile'
 //import addresses, { addressListSaga } from './addresses'
-//import route, { routeSaga } from './route'
+import addresses from './addresses'
+import route from './route'
 
 const persistConfigAuth = {
   key: 'user',
@@ -25,8 +26,8 @@ const persistConfigProfile = {
 export default combineReducers({
   user: persistReducer(persistConfigAuth, user),
   profile: persistReducer(persistConfigProfile, profile),
-  //addresses,
-  //route
+  addresses,
+  route
 })
 
 // export function* rootSaga() {

@@ -10,3 +10,4 @@ export const getIsOrderMade = createSelector(
   (state) => state.route.orderMade,
   (orderMade) => orderMade
 )
+// export const getIsOrderMade = (state) => state.route.orderMade
