@@ -46,7 +46,6 @@ export default function Register(props) {
   const dispatch = useDispatch()
   const error = useSelector(getError)
   const loading = useSelector(getLoading)
-  //const classes = useStyle()
 
   const handleChange = ({ target: { value, name } }) => {
     setUser({
