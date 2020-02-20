@@ -3,7 +3,7 @@ import { useSelector, shallowEqual } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import mapboxgl from 'mapbox-gl'
 import { getCoords, getIsOrderMade } from '../../modules/route'
-import OrderPage from './orderPage'
+import OrderPage from './OrderPage'
 
 const useStyles = makeStyles(() => ({
   container: {

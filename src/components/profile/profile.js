@@ -15,7 +15,8 @@ import { MCIcon } from 'loft-taxi-mui-theme'
 import Background from '../common/Background'
 import { getCard, profileRequest, profileClear } from '../../modules/profile'
 import ProfileAlert from '../ProfileAlert'
-//import { clearRoutes } from 'modules/route'
+//import {Formik, Field as FormikField} from 'formik'
+import { clearRoutes } from '../../modules/route'
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -54,6 +55,14 @@ const useStyles = makeStyles(() => ({
     backgroundColor: 'red'
   }
 }))
+const formErrors = {
+  cardError: false,
+  cardHelper: '',
+  cvcError: false,
+  cvcHelper: '',
+  nameError: false,
+  nameHelper: ''
+}
 
 const Profile = () => {
   const classes = useStyles()
@@ -85,12 +94,40 @@ const Profile = () => {
     }
   }, [cardFromStore])
 
-  // useEffect(() => {
-  //   dispatch(clearRoutes())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(clearRoutes())
+  }, [dispatch])
 
   const handleChange = (e) => {
     const { name, value } = e.target
+
+    if (name === 'cardNumber' && !value.match(/^\d{13,16}$/)) {
+      formErrors.cardError = true
+      formErrors.cardHelper = 'в номере карты должно быть 13 или 16 цифр'
+
+    }
+    if (name === 'cardNumber' && value.match(/^\d{13,16}$/)) {
+      formErrors.cardError = false
+      formErrors.cardHelper = ''
+    }
+
+    if (name === 'cvc' && !value.match(/^\d{3}$/)) {
+      formErrors.cvcError = true
+      formErrors.cvcHelper = 'в cvc должно быть 3 цифры'
+    }
+    if (name === 'cvc' && value.match(/^\d{3}$/)) {
+      formErrors.cvcError = false
+      formErrors.cvcHelper = ''
+    }
+    if (name === 'cardName' && !value.match(/[A-Z]+$/)){
+      formErrors.nameError = true
+      formErrors.nameHelper = 'Имя должно содержать только латинские буквы в верхнем регистре'
+    }
+    if (name === 'cardName' && value.match(/[A-Z]+$/)){
+      formErrors.nameError = false
+      formErrors.nameHelper = ''
+    }
+    // console.log(formErrors.cardError)
 
     setCard({
       ...card,
@@ -100,8 +137,10 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setUpdated(true)
-    dispatch(profileRequest(card))
+    if (!formErrors.cardError || !formErrors.cvcError || !formErrors.nameError) {
+      setUpdated(true)
+      dispatch(profileRequest(card))
+    }
   }
 
   const handleDateChange = (date) => {
@@ -113,9 +152,9 @@ const Profile = () => {
       <>
         <Paper className={classes.form}>
           <ProfileAlert
-            header="Profile"
-            body="Billing information updated. Now you can order a taxi."
-            btnText="Go to map"
+            header="Профиль"
+            body="Информация о карте обновлена. теперь можете заказать такси."
+            btnText="На карту"
             linkTo="/map"
           />
         </Paper>
@@ -128,79 +167,92 @@ const Profile = () => {
       <Container className={classes.container}>
         <Paper className={classes.profile}>
           <Container className={classes.profileContainer}>
-            <Box textAlign="center">
-              <Typography variant="h4">Профиль</Typography>
-              <Typography>Способ оплаты</Typography>
-            </Box>
-            <form onSubmit={handleSubmit}>
-              <Box className={classes.cardsContainer}>
-                <Paper className={classes.card}>
-                  <MCIcon />
-                  <TextField
-                    value={card.cardNumber}
-                    onChange={handleChange}
-                    label="Номер карты:"
-                    name="cardNumber"
-                    required
-                    fullWidth
-                  />
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DatePicker
-                      onChange={handleDateChange}
-                      label="Срок действия:"
-                      placeholder="12/21"
-                      name="expiryDate"
-                      views={['year', 'month']}
-                      format="MM/yy"
-                      value={card.expiryDate ? card.expiryDate : null}
-                      disablePast
-                      disableToolbar
-                      required
-                      fullWidth
-                    />
-                  </MuiPickersUtilsProvider>
-                </Paper>
-                <Paper className={classes.card}>
-                  <TextField
-                    value={card.cardName}
-                    onChange={handleChange}
-                    label="Имя владельца:"
-                    name="cardName"
-                    required
-                    fullWidth
-                  />
-                  <TextField
-                    value={card.cvc}
-                    onChange={handleChange}
-                    label="CVC"
-                    name="cvc"
-                    type="password"
-                    required
-                    fullWidth
-                  />
-                </Paper>
-              </Box>
-              <Box className={classes.buttonContainer}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                >
-                  Сохранить
-                </Button>
-                <Button
-                  className={classes.resetButton}
-                  onClick={() => dispatch(profileClear())}
-                  type="reset"
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                >
-                  Очистить
-                </Button>
-              </Box>
-            </form>
+            {updated && renderAlert()}
+            {!updated &&
+              <>
+                <Box textAlign="center">
+                  <Typography variant="h4">Профиль</Typography>
+                  <Typography>Способ оплаты</Typography>
+                </Box>
+                <form onSubmit={handleSubmit}>
+
+                  <Box className={classes.cardsContainer}>
+                    <Paper className={classes.card}>
+                      <MCIcon />
+                      <TextField
+                        value={card.cardNumber}
+                        error={formErrors.cardError}
+                        onChange={handleChange}
+                        label="Номер карты:"
+                        name="cardNumber"
+                        helperText={formErrors.cardHelper}
+                        required
+                        fullWidth
+                      />
+                      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <DatePicker
+                          onChange={handleDateChange}
+                          label="Срок действия:"
+                          placeholder="12/21"
+                          name="expiryDate"
+                          views={['year', 'month']}
+                          format="MM/yy"
+                          value={card.expiryDate ? card.expiryDate : null}
+                          disablePast
+                          disableToolbar
+                          required
+                          fullWidth
+                        />
+                      </MuiPickersUtilsProvider>
+                    </Paper>
+                    <Paper className={classes.card}>
+                      <TextField
+                        value={card.cardName}
+                        error={formErrors.nameError}
+                        helperText={formErrors.nameHelper}
+                        onChange={handleChange}
+                        label="Имя владельца:"
+                        name="cardName"
+                        required
+                        fullWidth
+                      />
+                      <TextField
+                        error={formErrors.cvcError}
+                        helperText={formErrors.cvcHelper}
+                        value={card.cvc}
+                        onChange={handleChange}
+                        label="CVC"
+                        name="cvc"
+                        type="password"
+                        required
+                        fullWidth
+                      />
+                    </Paper>
+                  </Box>
+                  <Box className={classes.buttonContainer}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                    >
+                      Сохранить
+            </Button>
+                    <Button
+                      className={classes.resetButton}
+                      onClick={() => dispatch(profileClear())}
+                      type="reset"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                    >
+                      Очистить
+                  </Button>
+                  </Box>
+                </form>
+              </>
+            }
+
           </Container>
         </Paper>
       </Container>

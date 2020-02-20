@@ -9,9 +9,6 @@ const useStyles = makeStyles(() => ({
   fieldAlign: {
     display: 'flex'
   },
-  alignLeft: {
-    justifyContent: 'flex-start'
-  },
   alignCenter: {
     justifyContent: 'center'
   }
@@ -35,7 +32,7 @@ const ProfileAlert = ({ header, body, btnText, linkTo }) => {
       <Grid
         item
         xs={12}
-        className={`${classes.alignLeft} ${classes.fieldAlign}`}
+        className={`${classes.alignCenter} ${classes.fieldAlign}`}
       >
         <Button component={Link} variant="outlined" color="primary" to={linkTo}>
           {btnText}
