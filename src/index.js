@@ -1,12 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import 'normalize.css'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { theme } from 'loft-taxi-mui-theme' // Импортируем саму тему
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import { AuthProvider } from './context'
+// import { postcssNormalize } from 'postcss-normalize'
+// import * as css from './App.css'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// postcssNormalize.process( css /*, processOptions, pluginOptions */)
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(
+  <MuiThemeProvider theme={theme}>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </MuiThemeProvider>,
+  document.getElementById('root')
+)

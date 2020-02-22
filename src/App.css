@@ -1,38 +1,53 @@
+.background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#root {
+  position: relative;
+}
+body {
+  position: relative;
+}
+
 .App {
-  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url(./img/background.jpg);
+  background-size: cover;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App-nobackground {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.logowrapper {
+  position: absolute;
+  display: block;
+  top: 50%;
+  left: 30%;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.register-login {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.profile-modal {
+  max-width: 545px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.profile-container {
+  margin: 40px;
+}
+.card-column {
+  background-color: yellow;
 }
